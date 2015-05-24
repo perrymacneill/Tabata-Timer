@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.perrymacneill.tabataintervaltimer.R;
-
 public class StartFragment extends Fragment {
 
     public StartFragment() {

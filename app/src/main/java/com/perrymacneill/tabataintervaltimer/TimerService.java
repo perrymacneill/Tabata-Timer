@@ -2,7 +2,6 @@ package com.perrymacneill.tabataintervaltimer;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.CountDownTimer;
 import android.os.IBinder;
 
 public class TimerService extends IntentService {

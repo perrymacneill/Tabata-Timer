@@ -8,7 +8,6 @@
 
     <TextView android:id="@+id/timerText"
         android:textSize="150sp"
-        android:text="test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -18,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="50sp"
-        android:text="test"
         android:id="@+id/intervalText"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -28,7 +26,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:text="Set 1"
         android:id="@+id/setText"
         android:layout_below="@+id/intervalText"
         android:layout_centerHorizontal="true" />

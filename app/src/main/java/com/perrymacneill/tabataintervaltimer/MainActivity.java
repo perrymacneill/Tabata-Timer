@@ -14,11 +14,13 @@ import android.view.View;
 
 public class MainActivity extends Activity {
 
-    public static final String START_TAG = "start", TIMER_TAG = "timer";
-    public static final int WORK_INTERVAL = 20, REST_INTERVAL = 10;
+    public final String START_TAG = "start", TIMER_TAG = "timer";
+    public final int WORK_INTERVAL = 3, REST_INTERVAL = 2;
+    public final String REST = "Rest!", WORK = "Work!", PREPARE = "Prepare!", FINISH = "Finished!";
 
     int mMillisInFuture;
-    int mCountdownInterval = 1000;
+    int mCurrentSet;
+    int mCountdownInterval;
     long mStopTimeInFuture;
     Thread mTimerThread;
 
@@ -46,20 +48,44 @@ public class MainActivity extends Activity {
         fragmentTransaction.commit();
         getFragmentManager().executePendingTransactions();
 
+        mCurrentSet = 0;
+        mCountdownInterval = 1000;
+
         setTimer(REST_INTERVAL);
     }
 
     public void setTimer(int inputTime) {
-        mMillisInFuture= inputTime*1000;
+        mMillisInFuture = inputTime * 1000;
         final int interval = inputTime;
+
         mStopTimeInFuture = SystemClock.elapsedRealtime() + mMillisInFuture;
+
+        final TimerFragment fragment = (TimerFragment) getFragmentManager()
+                .findFragmentByTag(TIMER_TAG);
+
+        Log.d("log", String.valueOf(mCurrentSet));
+        if (inputTime == REST_INTERVAL) {
+            if (mCurrentSet != 0 && mCurrentSet != 8) {
+                fragment.setText(REST, 0);
+            } else if (mCurrentSet == 8) {
+                fragment.setText(FINISH, 0);
+                fragment.setTime(0);
+                mCurrentSet = 0;
+                mHandler.removeCallbacksAndMessages(null);
+                return;
+            } else {
+                fragment.setText(PREPARE, 0);
+            }
+        } else {
+            mCurrentSet++;
+            fragment.setText(WORK, mCurrentSet);
+        }
 
         Runnable runnable = new Runnable() {
             public void run() {
-                if(interval == WORK_INTERVAL) {
+                if (interval == WORK_INTERVAL) {
                     mHandler.sendMessage(mHandler.obtainMessage(WORK_INTERVAL));
-                }
-                else if(interval == REST_INTERVAL) {
+                } else if (interval == REST_INTERVAL) {
                     mHandler.sendMessage(mHandler.obtainMessage(REST_INTERVAL));
                 }
             }
@@ -69,6 +95,7 @@ public class MainActivity extends Activity {
         mTimerThread.start();
     }
 
+
     private Handler mHandler = new Handler() {
 
         @Override
@@ -77,31 +104,30 @@ public class MainActivity extends Activity {
             final long millisLeft = mStopTimeInFuture - SystemClock.elapsedRealtime();
 
             if (millisLeft <= 0) {
-                switch(msg.what) {
-                    case WORK_INTERVAL:
-                        setTimer(REST_INTERVAL);
-                        break;
-                    case REST_INTERVAL:
-                        setTimer(WORK_INTERVAL);
-                        break;
-                    default:
-                        break;
+                if (msg.what == WORK_INTERVAL) {
+                    setTimer(REST_INTERVAL);
+                } else {
+                    setTimer(WORK_INTERVAL);
                 }
             } else if (millisLeft < mCountdownInterval) {
                 // no tick, just delay until done
                 sendMessageDelayed(obtainMessage(msg.what), millisLeft);
             } else {
                 long lastTickStart = SystemClock.elapsedRealtime();
-               // onTick(millisLeft);
+                // onTick(millisLeft);
                 TimerFragment fragment = (TimerFragment) getFragmentManager()
                         .findFragmentByTag(TIMER_TAG);
 
-                if(fragment != null) {
-                    int secsLeft = (int)millisLeft / 1000;
+                if (fragment != null) {
+                    int secsLeft = (int) millisLeft / 1000;
 
                     //this is do deal with the chance of hitting the exact full interval
-                    if(secsLeft == 20) {secsLeft = 19;}
-                    if(secsLeft == 10) {secsLeft = 9;}
+                    if (secsLeft == 20) {
+                        secsLeft = 19;
+                    }
+                    if (secsLeft == 10) {
+                        secsLeft = 9;
+                    }
 
                     fragment.setTime(secsLeft);
                     Log.d("log", String.valueOf(millisLeft));
@@ -112,7 +138,7 @@ public class MainActivity extends Activity {
 
                 // special case: user's onTick took more than interval to
                 // complete, skip to next interval
-               // while (delay < 0) delay += mCountdownInterval;
+                // while (delay < 0) delay += mCountdownInterval;
 
                 sendMessageDelayed(obtainMessage(msg.what), delay);
             }
@@ -124,6 +150,7 @@ public class MainActivity extends Activity {
         super.onBackPressed();
         mTimerThread.interrupt();
         mHandler.removeCallbacksAndMessages(null);
+        mCurrentSet = 0;
     }
 
     @Override

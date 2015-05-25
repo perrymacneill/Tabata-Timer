@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class TimerFragment extends Fragment {
 
-    private TextView mTimeText;
+    private TextView mTimeText, mIntervalText, mCurrentSetText;
 
     public TimerFragment() {
     }
@@ -26,15 +26,36 @@ public class TimerFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_timer, container, false);
 
-        mTimeText = (TextView) rootView.findViewById(R.id.text);
+        mTimeText = (TextView) rootView.findViewById(R.id.timerText);
         mTimeText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Thin.ttf"));
+
+        mIntervalText = (TextView) rootView.findViewById(R.id.intervalText);
+        mIntervalText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Thin.ttf"));
+
+        mCurrentSetText = (TextView) rootView.findViewById(R.id.setText);
+        mCurrentSetText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Thin.ttf"));
+
         //setTime();
 
         return rootView;
     }
 
-    public void setTime(long timeRemaining) {
-        String time = String.valueOf(timeRemaining);
-        mTimeText.setText(time);
+    public void setTime(int timeRemaining) {
+
+        if(timeRemaining != 0) {
+            mTimeText.setText(String.valueOf(timeRemaining));
+        }
+
+        else {
+            mTimeText.setText("");
+        }
+    }
+
+    public void setText(String text, int set) {
+        mIntervalText.setText(text);
+        if(set != 0) {
+            mCurrentSetText.setText("Set " + set);
+        }
+        else {mCurrentSetText.setText("");}
     }
 }

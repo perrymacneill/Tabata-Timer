@@ -6,8 +6,9 @@
     android:paddingBottom="@dimen/activity_vertical_margin">
     <!--tools:context=".MainActivity$PlaceholderFragment"-->
 
-    <TextView android:id="@+id/text"
+    <TextView android:id="@+id/timerText"
         android:textSize="150sp"
+        android:text="test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -16,11 +17,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView"
+        android:textSize="50sp"
+        android:text="test"
+        android:id="@+id/intervalText"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="Set 1"
+        android:id="@+id/setText"
+        android:layout_below="@+id/intervalText"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

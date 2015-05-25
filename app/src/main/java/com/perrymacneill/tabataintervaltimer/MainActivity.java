@@ -15,7 +15,7 @@ import android.view.View;
 public class MainActivity extends Activity {
 
     public final String START_TAG = "start", TIMER_TAG = "timer";
-    public final int WORK_INTERVAL = 3, REST_INTERVAL = 2;
+    public final int WORK_INTERVAL = 20, REST_INTERVAL = 10;
     public final String REST = "Rest!", WORK = "Work!", PREPARE = "Prepare!", FINISH = "Finished!";
 
     int mMillisInFuture;
@@ -79,6 +79,7 @@ public class MainActivity extends Activity {
         } else {
             mCurrentSet++;
             fragment.setText(WORK, mCurrentSet);
+            fragment.setProgressBar(mCurrentSet);
         }
 
         Runnable runnable = new Runnable() {

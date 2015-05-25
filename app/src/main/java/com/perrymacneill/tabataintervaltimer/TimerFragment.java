@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TimerFragment extends Fragment {
 
     private TextView mTimeText, mIntervalText, mCurrentSetText;
+    private ProgressBar mCurrentSetProgress;
 
     public TimerFragment() {
     }
@@ -35,7 +37,8 @@ public class TimerFragment extends Fragment {
         mCurrentSetText = (TextView) rootView.findViewById(R.id.setText);
         mCurrentSetText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Thin.ttf"));
 
-        //setTime();
+        mCurrentSetProgress = (ProgressBar) rootView.findViewById(R.id.setProgress);
+        mCurrentSetProgress.setMax(8);
 
         return rootView;
     }
@@ -57,5 +60,9 @@ public class TimerFragment extends Fragment {
             mCurrentSetText.setText("Set " + set);
         }
         else {mCurrentSetText.setText("");}
+    }
+
+    public void setProgressBar(int currentSet) {
+        mCurrentSetProgress.setProgress(currentSet);
     }
 }

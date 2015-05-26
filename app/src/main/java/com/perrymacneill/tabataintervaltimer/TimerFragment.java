@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 public class TimerFragment extends Fragment {
 
+    private final String PATH_TO_FONT = "fonts/Roboto-Thin.ttf";
+
     private TextView mTimeText, mIntervalText, mCurrentSetText;
     private ProgressBar mCurrentSetProgress;
 
@@ -29,13 +31,13 @@ public class TimerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_timer, container, false);
 
         mTimeText = (TextView) rootView.findViewById(R.id.timerText);
-        mTimeText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Thin.ttf"));
+        mTimeText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), PATH_TO_FONT));
 
         mIntervalText = (TextView) rootView.findViewById(R.id.intervalText);
-        mIntervalText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Thin.ttf"));
+        mIntervalText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), PATH_TO_FONT));
 
         mCurrentSetText = (TextView) rootView.findViewById(R.id.setText);
-        mCurrentSetText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Thin.ttf"));
+        mCurrentSetText.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), PATH_TO_FONT));
 
         mCurrentSetProgress = (ProgressBar) rootView.findViewById(R.id.setProgress);
         mCurrentSetProgress.setMax(8);

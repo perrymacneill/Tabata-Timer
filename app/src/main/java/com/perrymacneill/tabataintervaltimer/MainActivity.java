@@ -14,18 +14,18 @@ import android.view.View;
 public class MainActivity extends Activity {
 
     //tags for fragments
-    public final String START_TAG = "start", TIMER_TAG = "timer";
+    private final String START_TAG = "start", TIMER_TAG = "timer";
 
     //constants for intervals
-    public final int WORK_INTERVAL = 20, REST_INTERVAL = 10;
+    private final int WORK_INTERVAL = 20, REST_INTERVAL = 10;
 
     //constants for what strings to display
-    public final String REST = "Rest!", WORK = "Work!", PREPARE = "Prepare!", FINISH = "Finished!";
+    private final String REST = "Rest!", WORK = "Work!", PREPARE = "Prepare!", FINISH = "Finished!";
 
-    //variables used for timer
-    int mMillisInFuture, mCurrentSet, mCountdownInterval;
-    long mStopTimeInFuture;
-    Thread mTimerThread;
+    //used for timer
+    private int mMillisInFuture, mCurrentSet, mCountdownInterval;
+    private long mStopTimeInFuture;
+    private Thread mTimerThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
                     .commit();
 
             getFragmentManager().executePendingTransactions();
-
         }
     }
 
@@ -151,7 +150,6 @@ public class MainActivity extends Activity {
                     //update fragment with time left in interval
                     fragment.setTime(secsLeft);
                 }
-
                 //take into account time to execute, start next tick
                 long delay = lastTickStart + mCountdownInterval - SystemClock.elapsedRealtime();
                 sendMessageDelayed(obtainMessage(msg.what), delay);

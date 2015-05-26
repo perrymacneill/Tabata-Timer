@@ -10,6 +10,8 @@ import android.widget.Button;
 
 public class StartFragment extends Fragment {
 
+    private final String PATH_TO_FONT = "fonts/Roboto-Regular.ttf";
+
     public StartFragment() {
     }
 
@@ -20,7 +22,7 @@ public class StartFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_start, container, false);
 
         Button mButton = (Button) rootView.findViewById(R.id.start_button);
-        mButton.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf"));
+        mButton.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), PATH_TO_FONT));
 
         return rootView;
     }

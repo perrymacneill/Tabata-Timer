@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Tabata Interval Timer</string>
-    <string name="hello_world">60</string>
     <string name="action_settings">Settings</string>
     <string name="start">START</string>
 </resources>

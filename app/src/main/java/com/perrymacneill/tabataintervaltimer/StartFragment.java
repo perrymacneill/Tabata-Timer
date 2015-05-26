@@ -22,8 +22,6 @@ public class StartFragment extends Fragment {
         Button mButton = (Button) rootView.findViewById(R.id.start_button);
         mButton.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf"));
 
-
-
         return rootView;
     }
 }

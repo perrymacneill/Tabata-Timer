@@ -43,25 +43,30 @@ public class TimerFragment extends Fragment {
         return rootView;
     }
 
+    //set the time text
     public void setTime(int timeRemaining) {
 
-        if(timeRemaining != 0) {
+        if (timeRemaining != 0) {
             mTimeText.setText(String.valueOf(timeRemaining));
-        }
-
-        else {
+        } else {
+            //don't display time when workout is finished
             mTimeText.setText("");
         }
     }
 
+    //set the current interval text
     public void setText(String text, int set) {
         mIntervalText.setText(text);
-        if(set != 0) {
+        if (set != 0) {
             mCurrentSetText.setText("Set " + set);
         }
-        else {mCurrentSetText.setText("");}
+        //don't display current set if resting
+        else {
+            mCurrentSetText.setText("");
+        }
     }
 
+    //set the progress
     public void setProgressBar(int currentSet) {
         mCurrentSetProgress.setProgress(currentSet);
     }

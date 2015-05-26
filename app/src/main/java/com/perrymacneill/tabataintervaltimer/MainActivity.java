@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,13 +13,17 @@ import android.view.View;
 
 public class MainActivity extends Activity {
 
+    //tags for fragments
     public final String START_TAG = "start", TIMER_TAG = "timer";
+
+    //constants for intervals
     public final int WORK_INTERVAL = 20, REST_INTERVAL = 10;
+
+    //constants for what strings to display
     public final String REST = "Rest!", WORK = "Work!", PREPARE = "Prepare!", FINISH = "Finished!";
 
-    int mMillisInFuture;
-    int mCurrentSet;
-    int mCountdownInterval;
+    //variables used for timer
+    int mMillisInFuture, mCurrentSet, mCountdownInterval;
     long mStopTimeInFuture;
     Thread mTimerThread;
 
@@ -48,36 +51,51 @@ public class MainActivity extends Activity {
         fragmentTransaction.commit();
         getFragmentManager().executePendingTransactions();
 
+        //initialize variables for the timer
         mCurrentSet = 0;
         mCountdownInterval = 1000;
 
+        //begin prep interval
         setTimer(REST_INTERVAL);
     }
 
     public void setTimer(int inputTime) {
+
+        //input time in millis
         mMillisInFuture = inputTime * 1000;
         final int interval = inputTime;
 
+        //total interval time relative to current time
         mStopTimeInFuture = SystemClock.elapsedRealtime() + mMillisInFuture;
 
         final TimerFragment fragment = (TimerFragment) getFragmentManager()
                 .findFragmentByTag(TIMER_TAG);
 
-        Log.d("log", String.valueOf(mCurrentSet));
         if (inputTime == REST_INTERVAL) {
             if (mCurrentSet != 0 && mCurrentSet != 8) {
+                //this is a rest interval
                 fragment.setText(REST, 0);
+
             } else if (mCurrentSet == 8) {
+                //workout is finished
                 fragment.setText(FINISH, 0);
                 fragment.setTime(0);
                 mCurrentSet = 0;
+
+                //removes callbacks and return
                 mHandler.removeCallbacksAndMessages(null);
                 return;
+
             } else {
+                //the set is 0, so this is a prep interval
                 fragment.setText(PREPARE, 0);
             }
+
         } else {
+            //this is a work interval, so increase the current set
             mCurrentSet++;
+
+            //set text and increase progress bar
             fragment.setText(WORK, mCurrentSet);
             fragment.setProgressBar(mCurrentSet);
         }
@@ -105,17 +123,17 @@ public class MainActivity extends Activity {
             final long millisLeft = mStopTimeInFuture - SystemClock.elapsedRealtime();
 
             if (millisLeft <= 0) {
+                //interval is finished, start next interval based on current
                 if (msg.what == WORK_INTERVAL) {
                     setTimer(REST_INTERVAL);
                 } else {
                     setTimer(WORK_INTERVAL);
                 }
             } else if (millisLeft < mCountdownInterval) {
-                // no tick, just delay until done
+                //interval not reached, delay by time left
                 sendMessageDelayed(obtainMessage(msg.what), millisLeft);
             } else {
                 long lastTickStart = SystemClock.elapsedRealtime();
-                // onTick(millisLeft);
                 TimerFragment fragment = (TimerFragment) getFragmentManager()
                         .findFragmentByTag(TIMER_TAG);
 
@@ -130,17 +148,12 @@ public class MainActivity extends Activity {
                         secsLeft = 9;
                     }
 
+                    //update fragment with time left in interval
                     fragment.setTime(secsLeft);
-                    Log.d("log", String.valueOf(millisLeft));
                 }
 
-                // take into account user's onTick taking time to execute
+                //take into account time to execute, start next tick
                 long delay = lastTickStart + mCountdownInterval - SystemClock.elapsedRealtime();
-
-                // special case: user's onTick took more than interval to
-                // complete, skip to next interval
-                // while (delay < 0) delay += mCountdownInterval;
-
                 sendMessageDelayed(obtainMessage(msg.what), delay);
             }
         }
@@ -149,11 +162,14 @@ public class MainActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        //going back is treated as a reset, remove callbacks and interrupt thread
         mTimerThread.interrupt();
         mHandler.removeCallbacksAndMessages(null);
         mCurrentSet = 0;
     }
 
+    //TODO implement options
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
